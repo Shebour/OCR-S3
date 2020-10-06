@@ -1,0 +1,1 @@
+Compiler en utilisant la commande "gcc -Wextra -Werror -Wall initSDL.c $(sdl2-config --cflags --libs)"
