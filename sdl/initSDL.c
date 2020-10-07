@@ -1,70 +1,71 @@
-#include </usr/include/SDL2/SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <err.h>
+#include <SDL2/SDL_image.h>
 
-int init(SDL_Window **window, SDL_Renderer **renderer, int w, int h){
-    if(0 != SDL_Init(SDL_INIT_VIDEO)){
-        fprintf(stderr, "Erreur SDL_Init : %s", SDL_GetError());
-        return -1;
-    }
-    if(0 != SDL_CreateWindowAndRenderer(w, h, SDL_WINDOW_SHOWN, window, renderer)){
-        fprintf(stderr, "Erreur SDL_CreateWindowAndRenderer : %s", SDL_GetError());
-        return -1;
-    }
-    return 0;
+void init(){
+    if(SDL_Init(SDL_INIT_VIDEO) == -1)
+        errx(1, "Couldn't initialize SDL : %s;\n", SDL_GetError());
 }
 
-SDL_Texture *loadImage(const char path[], SDL_Renderer *renderer){
-    SDL_Surface *tmp = NULL; 
-    SDL_Texture *texture = NULL;
-    tmp = SDL_LoadBMP(path);
-    if(NULL == tmp){
-        fprintf(stderr, "Erreur SDL_LoadBMP : %s", SDL_GetError());
-        return NULL;
-    }
-    texture = SDL_CreateTextureFromSurface(renderer, tmp);
-    SDL_FreeSurface(tmp);
-    if(NULL == texture){
-        fprintf(stderr, "Erreur SDL_CreateTextureFromSurface : %s", SDL_GetError());
-        return NULL;
-    }
-    return texture;
+SDL_Surface *loadImage(char *path){
+    SDL_Surface *image;
+    image = SDL_LoadBMP(path);
+    if (!image)
+        errx(3, "Can't load %s : %s", path, IMG_GetError());
+    return image;
 }
-
-int setWindowColor(SDL_Renderer *renderer, SDL_Color color)
+Uint32 getpixel(SDL_Surface *surface, int x, int y)
 {
-    if(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a) < 0)
-        return -1;
-    if(SDL_RenderClear(renderer) < 0)
-        return -1;
-    return 0;  
+    int bpp = surface->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch (bpp)
+    {
+        case 1:
+            return *p;
+            break;
+
+        case 2:
+            return *(Uint16 *)p;
+            break;
+
+        case 3:
+            if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                return p[0] << 16 | p[1] << 8 | p[2];
+            else
+                return p[0] | p[1] << 8 | p[2] << 16;
+            break;
+
+        case 4:
+            return *(Uint32 *)p;
+            break;
+
+        default:
+            return 0;
+    }
+}
+
+void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel){
+    Uint8 *target_pixel = (Uint8 *)surface->pixels + y * surface->pitch + x * 4;
+    *(Uint32 *)target_pixel = pixel;
 }
 
 int main(){
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
-    SDL_Texture *image = NULL;
-    int statut = EXIT_FAILURE;
-    SDL_Color blanc = {255, 255, 255, 255};
-    if (init(&window, &renderer, 640, 400) == -1)
-        goto Quit;
-    
-    image = loadImage("image.bmp", renderer);
-    if (NULL == image)
-        goto Quit;
-    
-    statut = EXIT_SUCCESS;
-    setWindowColor(renderer, blanc);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(10000);
-
-    Quit:
-    if(NULL != image)
-        SDL_DestroyTexture(image);
-    if(NULL != renderer)
-        SDL_DestroyRenderer(renderer);
-    if(NULL != window)
-        SDL_DestroyWindow(window);
-    SDL_Quit();
-    return statut;
+    SDL_Surface *image;
+    init();
+    image = loadImage("image.bmp");
+    SDL_Color rgb;
+    for (int i = 0; i < image->w; i++){
+        for (int j = 0; j < image->h; j++){
+            Uint32 data = getpixel(image, i, j);
+            SDL_GetRGB(data, image->format, &rgb.r, &rgb.g, &rgb.b);
+            rgb.r = (int) rgb.r;
+            rgb.g = (int) rgb.g;
+            rgb.b = (int) rgb.b;
+            printf("couleur i : %d j : %d RGB : %d / %d / %d\n", i, j, rgb.r, rgb.g, rgb.b);
+        }
+    }
+    return 0;
 }
