@@ -52,11 +52,20 @@ void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel){
     *(Uint32 *)target_pixel = pixel;
 }
 
+
 int main(){
+    SDL_Window *window;
     SDL_Surface *image;
+    SDL_Renderer *renderer;
+    SDL_Texture *texture;
     init();
+    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
+    if (window == NULL){
+        errx(1, "Could not initialize the window : %s", SDL_GetError());
+    }
     image = loadImage("image.bmp");
     SDL_Color rgb;
+    texture = SDL_CreateTextureFromSurface(renderer, image);
     for (int i = 0; i < image->w; i++){
         for (int j = 0; j < image->h; j++){
             Uint32 data = getpixel(image, i, j);
@@ -67,5 +76,10 @@ int main(){
             printf("couleur i : %d j : %d RGB : %d / %d / %d\n", i, j, rgb.r, rgb.g, rgb.b);
         }
     }
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_Delay(10000);
+    SDL_DestroyWindow(window);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(image);
     return 0;
 }
