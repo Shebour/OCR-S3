@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <err.h>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL_image.h"
 
 void init(){
     if(SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -59,12 +59,13 @@ int main(){
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     init();
-    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
+    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, 0);
     if (window == NULL){
         errx(1, "Could not initialize the window : %s", SDL_GetError());
     }
     image = loadImage("image.bmp");
     SDL_Color rgb;
+    renderer = SDL_CreateRenderer(window, -1, 0);
     texture = SDL_CreateTextureFromSurface(renderer, image);
     for (int i = 0; i < image->w; i++){
         for (int j = 0; j < image->h; j++){
@@ -77,6 +78,7 @@ int main(){
         }
     }
     SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
     SDL_Delay(10000);
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
