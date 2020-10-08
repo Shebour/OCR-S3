@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <err.h>
@@ -16,7 +16,8 @@ SDL_Surface *loadImage(char *path){
         errx(3, "Can't load %s : %s", path, IMG_GetError());
     return image;
 }
-Uint32 getpixel(SDL_Surface *surface, int x, int y)
+
+Uint32 getPixel(SDL_Surface *surface, int x, int y)
 {
     int bpp = surface->format->BytesPerPixel;
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
@@ -47,41 +48,71 @@ Uint32 getpixel(SDL_Surface *surface, int x, int y)
     }
 }
 
-void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel){
-    Uint8 *target_pixel = (Uint8 *)surface->pixels + y * surface->pitch + x * 4;
-    *(Uint32 *)target_pixel = pixel;
+void setPixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b){
+    Uint32 *pixels = surface->pixels;
+    Uint32 color = SDL_MapRGB(surface->format, r, g, b);
+    pixels[y * surface->w + x] = color;
 }
 
-
-int main(){
+void displayPicture(SDL_Surface *picture){
     SDL_Window *window;
-    SDL_Surface *image;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
-    init();
-    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, 0);
-    if (window == NULL){
-        errx(1, "Could not initialize the window : %s", SDL_GetError());
-    }
-    image = loadImage("image.bmp");
-    SDL_Color rgb;
+    init(); 
+    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, 0);
+    if (window == NULL)
+        errx(1, "Could not init the window : %s", SDL_GetError());
     renderer = SDL_CreateRenderer(window, -1, 0);
-    texture = SDL_CreateTextureFromSurface(renderer, image);
+    texture = SDL_CreateTextureFromSurface(renderer, picture);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(10000);
+    SDL_DestroyWindow(window);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(picture);
+    SDL_Quit();
+}
+
+Uint8 maxValue(Uint8 r, Uint8 g, Uint8 b){
+    Uint8 max = r;
+    if (g < b && b > r)
+        max = b;
+    if (g > b && g > r)
+        max = g;
+    return max;
+}
+
+void greyScale(SDL_Surface *picture){
+    Uint32 pixel;
+    Uint8 r, g, b, lum;
+    for (int i = 0; i < picture->w; i++){
+        for (int j = 0; j < picture->h; j++){
+            pixel = getPixel(picture, i, j);
+            SDL_GetRGB(pixel, picture->format, &r, &g, &b);
+            lum = maxValue(r, g, b) / 255;
+            r = lum * r;
+            g = lum * g;
+            b = lum * b;
+            setPixel(picture, i, j, r, g, b);
+        }
+    }
+}
+
+int main(){
+    SDL_Surface *picture;
+    picture = loadImage("image.bmp");
+    greyScale(picture);
+    displayPicture(picture);
+    /*SDL_Color rgb;
     for (int i = 0; i < image->w; i++){
         for (int j = 0; j < image->h; j++){
-            Uint32 data = getpixel(image, i, j);
+            Uint32 data = getPixel(image, i, j);
             SDL_GetRGB(data, image->format, &rgb.r, &rgb.g, &rgb.b);
             rgb.r = (int) rgb.r;
             rgb.g = (int) rgb.g;
             rgb.b = (int) rgb.b;
             printf("couleur i : %d j : %d RGB : %d / %d / %d\n", i, j, rgb.r, rgb.g, rgb.b);
         }
-    }
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(10000);
-    SDL_DestroyWindow(window);
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(image);
+    }*/
     return 0;
 }
