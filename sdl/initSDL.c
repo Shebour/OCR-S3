@@ -48,10 +48,36 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
     }
 }
 
-void setPixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b){
-    Uint32 *pixels = surface->pixels;
-    Uint32 color = SDL_MapRGB(surface->format, r, g, b);
-    pixels[y * surface->w + x] = color;
+void setPixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel){
+
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch
+        + x * surface->format->BytesPerPixel;
+    switch(surface->format->BytesPerPixel){
+        case 1:
+            *p = pixel;
+            break;
+
+        case 2:
+            *(Uint16 *)p = pixel;
+            break;
+
+        case 3:
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN){
+                p[0] = (pixel >> 16) & 0xff;
+                p[1] = (pixel >> 8) & 0xff;
+                p[2] = pixel & 0xff;
+            }
+            else{
+                p[0] = pixel & 0xff;
+                p[1] = (pixel >> 8) & 0xff;
+                p[2] = (pixel >> 16) & 0xff;
+            }
+            break;
+
+        case 4:
+            *(Uint32 *)p = pixel;
+            break;
+    }
 }
 
 void displayPicture(SDL_Surface *picture){
@@ -59,7 +85,7 @@ void displayPicture(SDL_Surface *picture){
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     init(); 
-    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 770, 577, 0);
+    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, picture->w, picture->h, 0);
     if (window == NULL)
         errx(1, "Could not init the window : %s", SDL_GetError());
     renderer = SDL_CreateRenderer(window, -1, 0);
@@ -84,32 +110,31 @@ Uint8 maxValue(Uint8 r, Uint8 g, Uint8 b){
 
 void greyScale(SDL_Surface *picture){
     Uint32 pixel;
-    Uint8 r, g, b;
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){
+            Uint8 r, g, b;
             pixel = getPixel(picture, i, j);
             SDL_GetRGB(pixel, picture->format, &r, &g, &b);
             int average = 0.3 * r + 0.59 * g + 0.11 * b;
-            setPixel(picture, i, j, average, average, average);
+            r = b = g = average;
+            pixel = SDL_MapRGB(picture->format, r, g, b);
+            setPixel(picture, i, j, pixel);
         }
     }
 }
 
+void waitForKbEvent(){
+    if (NULL == SDL_KeyboardEvent(SDL_KEYDOWN, 5, SDL_PRESSED, SDL_KEYSYM(SDL_SCANCODE_G)))
+        printf("Please, press the G key to run");
+}
+
 int main(){
     SDL_Surface *picture;
-    picture = loadImage("dl.bmp");
-    //greyScale(picture);
+    picture = IMG_Load("test2.bmp");
+    if (picture == NULL)
+        errx(1, "Could not open the picture : %s", SDL_GetError());
+    waitForKbEvent();
+    greyScale(picture);
     displayPicture(picture);
-    /*SDL_Color rgb;
-    for (int i = 0; i < image->w; i++){
-        for (int j = 0; j < image->h; j++){
-            Uint32 data = getPixel(image, i, j);
-            SDL_GetRGB(data, image->format, &rgb.r, &rgb.g, &rgb.b);
-            rgb.r = (int) rgb.r;
-            rgb.g = (int) rgb.g;
-            rgb.b = (int) rgb.b;
-            printf("couleur i : %d j : %d RGB : %d / %d / %d\n", i, j, rgb.r, rgb.g, rgb.b);
-        }
-    }*/
     return 0;
 }
