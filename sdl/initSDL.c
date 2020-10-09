@@ -92,7 +92,7 @@ void displayPicture(SDL_Surface *picture){
     texture = SDL_CreateTextureFromSurface(renderer, picture);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
-    SDL_Delay(10000);
+    SDL_Delay(5000);
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(picture);
@@ -123,18 +123,41 @@ void greyScale(SDL_Surface *picture){
     }
 }
 
-void waitForKbEvent(){
-    if (NULL == SDL_KeyboardEvent(SDL_KEYDOWN, 5, SDL_PRESSED, SDL_KEYSYM(SDL_SCANCODE_G)))
-        printf("Please, press the G key to run");
+void blackNWhite(SDL_Surface *picture){ 
+    Uint32 pixel;
+    for (int i = 0; i < picture->w; i++){
+        for (int j = 0; j < picture->h; j++){
+            Uint8 r, g, b;
+            pixel = getPixel(picture, i, j);
+            SDL_GetRGB(pixel, picture->format, &r, &g, &b);
+            if (r > 255 / 2 && g > 255 / 2 && b > 255 / 2)
+                r = g = b = 255;
+            else
+                r = g = b = 0;
+            pixel = SDL_MapRGB(picture->format, r, g, b);
+            setPixel(picture, i, j, pixel);
+        }
+    }
 }
+
+/*void waitForKbEvent(){
+    SDL_KeyboardEvent *greyscaleEvent;
+    greyscaleEvent->type = SDL_KEYDOWN;
+    greyscaleEvent->state = SDL_PRESSED;
+    greyscaleEvent->keysym = SDL_SCANCODE_G;
+    if (NULL == SDL_PollEvent(greyscaleEvent))
+        printf("Please, press the G key to run");
+}*/
 
 int main(){
     SDL_Surface *picture;
-    picture = IMG_Load("test2.bmp");
+    picture = IMG_Load("dl2.bmp");
     if (picture == NULL)
         errx(1, "Could not open the picture : %s", SDL_GetError());
-    waitForKbEvent();
+    //waitForKbEvent();
     greyScale(picture);
+    displayPicture(picture);
+    blackNWhite(picture);
     displayPicture(picture);
     return 0;
 }
