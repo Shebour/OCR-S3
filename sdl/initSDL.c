@@ -59,7 +59,7 @@ void displayPicture(SDL_Surface *picture){
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     init(); 
-    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, 0);
+    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 770, 577, 0);
     if (window == NULL)
         errx(1, "Could not init the window : %s", SDL_GetError());
     renderer = SDL_CreateRenderer(window, -1, 0);
@@ -84,24 +84,21 @@ Uint8 maxValue(Uint8 r, Uint8 g, Uint8 b){
 
 void greyScale(SDL_Surface *picture){
     Uint32 pixel;
-    Uint8 r, g, b, lum;
+    Uint8 r, g, b;
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){
             pixel = getPixel(picture, i, j);
             SDL_GetRGB(pixel, picture->format, &r, &g, &b);
-            lum = maxValue(r, g, b) / 255;
-            r = lum * r;
-            g = lum * g;
-            b = lum * b;
-            setPixel(picture, i, j, r, g, b);
+            int average = 0.3 * r + 0.59 * g + 0.11 * b;
+            setPixel(picture, i, j, average, average, average);
         }
     }
 }
 
 int main(){
     SDL_Surface *picture;
-    picture = loadImage("image.bmp");
-    greyScale(picture);
+    picture = loadImage("dl.bmp");
+    //greyScale(picture);
     displayPicture(picture);
     /*SDL_Color rgb;
     for (int i = 0; i < image->w; i++){
