@@ -5,28 +5,27 @@
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
 
-SDL_Surface* greyScale(SDL_Surface *picture){
+void grey_scale(SDL_Surface *picture){
     Uint32 pixel;
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){
             Uint8 r, g, b;
-            pixel = getPixel(picture, i, j);
+            pixel = get_pixel(picture, i, j);
             SDL_GetRGB(pixel, picture->format, &r, &g, &b);
             Uint32 average = 0.3 * r + 0.59 * g + 0.11 * b;
             r = b = g = average;
             pixel = SDL_MapRGB(picture->format, r, g, b);
-            setPixel(picture, i, j, pixel);
+            set_pixel(picture, i, j, pixel);
         }
     }
-    return picture;
 }
 
-SDL_Surface* blackNWhite(SDL_Surface *picture){ 
+void black_white(SDL_Surface *picture){ 
     Uint32 pixel;
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){
             Uint8 r, g, b;
-            pixel = getPixel(picture, i, j);
+            pixel = get_pixel(picture, i, j);
             SDL_GetRGB(pixel, picture->format, &r, &g, &b);
             if (r > 255 / 2)
                 r = 255;
@@ -41,9 +40,8 @@ SDL_Surface* blackNWhite(SDL_Surface *picture){
             else
                 b = 0;
             pixel = SDL_MapRGB(picture->format, r, g, b);
-            setPixel(picture, i, j, pixel);
+            set_pixel(picture, i, j, pixel);
         }
-    }
-    return picture; 
+    } 
 }
 

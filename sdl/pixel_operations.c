@@ -4,10 +4,10 @@
 #include <err.h>
 #include "SDL2/SDL_image.h"
 
-Uint32 getPixel(SDL_Surface *surface, int x, int y)
+Uint32 get_pixel(SDL_Surface *picture, unsigned x, unsigned y)
 {
-    int bpp = surface->format->BytesPerPixel;
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+    int bpp = picture->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)picture->pixels + y * picture->pitch + x * bpp;
 
     switch (bpp)
     {
@@ -35,11 +35,11 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
     }
 }
 
-void setPixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel){
+void set_pixel(SDL_Surface *picture, unsigned x, unsigned y, Uint32 pixel){
 
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch
-        + x * surface->format->BytesPerPixel;
-    switch(surface->format->BytesPerPixel){
+    Uint8 *p = (Uint8 *)picture->pixels + y * picture->pitch
+        + x * picture->format->BytesPerPixel;
+    switch(picture->format->BytesPerPixel){
         case 1:
             *p = pixel;
             break;

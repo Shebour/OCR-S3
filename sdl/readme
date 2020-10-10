@@ -1,2 +1,2 @@
-Compiler en utilisant la commande ""gcc -Wextra -Werror -Wall -std=c99 -O1 -o main initSDL.c $(sdl2-config --cflags --libs) -lSDL2_image
+Compiler en utilisant la commande ""gcc -Wextra -Werror -Wall -std=c99 -O1 -o main *.c $(sdl2-config --cflags --libs) -lSDL2_image
 
