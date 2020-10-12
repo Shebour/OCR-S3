@@ -19,8 +19,7 @@ char wait_for_key_pressed(){
         return 'a';    
 }
 
-void display(){
-    init();
+SDL_Surface * load_picture(){ 
     SDL_Surface *picture;
     char path[50];
     printf("Please enter a path (less than 50 character): ");
@@ -29,20 +28,37 @@ void display(){
         picture = IMG_Load(path);
     if (picture == NULL)
         errx(1, "Could not open the picture : %s", SDL_GetError()); 
+    return picture;
+}
+
+
+
+void display(SDL_Surface * picture){
+    init();
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
+
     grey_scale(picture);
     black_white(picture);
+
     window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED, picture->w, picture->h, 0);
     renderer = SDL_CreateRenderer(window, -1, 0);
     texture = SDL_CreateTextureFromSurface(renderer, picture);
+
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     SDL_Delay(5000); 
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
+
     SDL_FreeSurface(picture);
 }
 
+int main(){
+    SDL_Surface * picture;
+    picture = load_picture();
+    display(picture);
+    return 0;
+}
