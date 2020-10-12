@@ -5,12 +5,15 @@
 #include "display_picture.h"
 
 int main(int argc, char **argv){
-    init();
-    int p = argc;
-    p++;
+    init();//init the lib sdl
+    if (argc != 2)//two args to start, die with an error message if not
+        errx(1, "Too few arguments");
+
     SDL_Surface * picture;
-    char *path = argv[1];
-    picture = load_picture(path);
-    display(picture);
+    char *path = argv[1];//get the path of the picture to display
+
+    picture = load_picture(path);//load the picture thanks to the path
+
+    display(picture);//display the picture
     return 0;
 }
