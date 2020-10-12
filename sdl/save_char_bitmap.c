@@ -7,39 +7,49 @@
 #include "display_picture.h"
 
 
+void NumberOfLine(SDL_Surface *picture, int nbrLine);
 
+struct Mot
+{
+    int lettres[50][50];
+};
 
-/*void saveCharBitmap(SDL_Surface *picture)
+struct Ligne{
+    struct Mot mots[10];
+};
+
+struct ElementsBitmap
+{
+    struct Ligne lignes[20];
+};
+
+void saveCharBitmap(SDL_Surface *picture)
 {
     int nbrLine = 0;
     NumberOfLine(picture,nbrLine);
 
-    int *lettres[];
+    int lettres[20][20];
 
-    struct Mot *mots[]
+    struct Mot mots[10] = 
     {
-        20,
-        20,
-        *lettres[20,20]
-    }
-
-    struct Ligne *lignes[]
-    {
-        20,
-        *mots[20],
+        lettres[][],
     };
 
-    struct ElementsBitmap Text
+    struct Ligne lignes[nbrLigne] = 
     {
-        nbrLigne,
-        *lignes[nbrLigne],
+        mots[],
+    };
+
+    struct ElementsBitmap Text = 
+    {
+        lignes[],
     };
 
 }
 
 void NumberOfLine(SDL_Surface *picture, int nbrLine)
 {
-    
-}*/
+    nbrLine = 1;
+}
 
 
