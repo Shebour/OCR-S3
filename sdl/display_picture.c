@@ -46,7 +46,3 @@ void display(){
     SDL_FreeSurface(picture);
 }
 
-int main(){
-    display();
-    return 0;
-}
