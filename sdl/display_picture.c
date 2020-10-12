@@ -5,6 +5,7 @@
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
 #include "color_operations.h"
+#include "line.h"
 
 //Init the rendering management system
 //Die with an error if not
@@ -42,14 +43,19 @@ void display(SDL_Surface * picture){
     //transform the picture
     grey_scale(picture);
     black_white(picture);
+    line_horizontal(picture);
+    line_vertical(picture);
+
     //display it
     window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED, picture->w, picture->h, 0);
+
     renderer = SDL_CreateRenderer(window, -1, 0);
     texture = SDL_CreateTextureFromSurface(renderer, picture);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
-    SDL_Delay(5000); 
+    SDL_Delay(5000);
+
     //Free the memory used to display the picture
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
