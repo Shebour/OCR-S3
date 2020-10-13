@@ -20,7 +20,9 @@ SDL_Surface* ResizePictureForALetter(SDL_Surface *picture, int x,
 {   
     SDL_Surface* Resize = NULL; 
 
-    Resize = SDL_CreateRGBSurface(0, w+1, h+1,32,0,0,0,0); // Create a surface
+    Resize = SDL_CreateRGBSurface(0, w, h,32,0,0,0,0); // Create a surface
+    
+   
     
     if(Resize == NULL)
     {
@@ -40,6 +42,9 @@ SDL_Surface* ResizePictureForALetter(SDL_Surface *picture, int x,
     dstrect.h = 0;
 
     SDL_BlitSurface(picture, &srcrect, Resize, &dstrect);
+
+    //SDL_FreeSurface(Resize);
+    //SDL_FreeSurface(picture);
 
     return Resize;
 }
@@ -239,8 +244,8 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                     {
                     
                         LettreSurface = ResizePictureForALetter(picture,
-                            FirstRedLigne, StartColumn,jProvisoire2-StartColumn+1,
-                            SecondRedLigne-FirstRedLigne+1);
+                            FirstRedLigne, StartColumn,jProvisoire2-StartColumn,
+                            SecondRedLigne-FirstRedLigne);
 
                         int MaxSpaceBetweenLetters = SizeOfSpaceBetweenLetters(picture);
                         int res = ItIsAWhiteSurface(LettreSurface);
