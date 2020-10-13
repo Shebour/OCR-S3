@@ -148,12 +148,16 @@ int FirstBlueLine(SDL_Surface* picture, int line)
     return picture->w;
 }
 
-int SizeOfSpaceBetweenLetters(SDL_Surface* picture)
-{
-    if(picture == NULL)
-        return -1;
 
-    return 3;
+// Probability of width of a space between 2 letters 
+int SizeOfSpaceBetweenLetters(int FirstRedLine, int SecondRedLine)
+{
+    int result = SecondRedLine - FirstRedLine + 1;
+    
+    if(result >= 20)
+        return result/4;
+    else
+        return result/7;
 }
 
 // If = 0 we are in a blue line, 1 else

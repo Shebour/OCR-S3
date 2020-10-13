@@ -73,7 +73,8 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                             FirstRedLigne, StartColumn,jProvisoire2-StartColumn+1,
                             SecondRedLigne-FirstRedLigne+1);
 
-                        int MaxSpaceBetweenLetters = SizeOfSpaceBetweenLetters(picture);
+                        int MaxSpaceBetweenLetters = SizeOfSpaceBetweenLetters(
+                                FirstRedLigne, SecondRedLigne);
                         int res = ItIsAWhiteSurface(LettreSurface);
 
                         // If the surface is white and is width is <= to MaxspaceBetween letter

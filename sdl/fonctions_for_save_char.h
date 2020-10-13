@@ -10,7 +10,7 @@ SDL_Surface* TexteFini();
 int ItIsAWhiteSurface(SDL_Surface* picture);
 int ThereIsABluePixel(SDL_Surface* picture, int ligne, int startColonne);
 int FirstBlueLine(SDL_Surface* picture, int line);
-int SizeOfSpaceBetweenLetters(SDL_Surface* picture);
+int SizeOfSpaceBetweenLetters(int FisrtRedLigne, int SecondRedLigne);
 int DoubleBlueLine(SDL_Surface* picture, int line, int column);
 
 #endif

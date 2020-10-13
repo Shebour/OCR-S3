@@ -48,10 +48,10 @@ void display(SDL_Surface * picture){
     line_vertical(picture);
 
     // Save all letters
-    SDL_Surface **tab = SaveAllLetters(picture);
+    //SDL_Surface **tab = SaveAllLetters(picture);
     
     //PourTester DONC ICI A ENLEVER APRES
-    picture = tab[29];
+    //picture = tab[24];
 
 
     //display it
