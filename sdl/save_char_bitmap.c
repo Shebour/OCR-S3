@@ -244,8 +244,8 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                     {
                     
                         LettreSurface = ResizePictureForALetter(picture,
-                            FirstRedLigne, StartColumn,jProvisoire2-StartColumn,
-                            SecondRedLigne-FirstRedLigne);
+                            FirstRedLigne, StartColumn,jProvisoire2-StartColumn+1,
+                            SecondRedLigne-FirstRedLigne+1);
 
                         int MaxSpaceBetweenLetters = SizeOfSpaceBetweenLetters(picture);
                         int res = ItIsAWhiteSurface(LettreSurface);
