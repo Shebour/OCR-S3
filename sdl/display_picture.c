@@ -6,6 +6,7 @@
 #include "pixel_operations.h"
 #include "color_operations.h"
 #include "line.h"
+#include "save_char_bitmap.h"
 
 //Init the rendering management system
 //Die with an error if not
@@ -45,6 +46,12 @@ void display(SDL_Surface * picture){
     black_white(picture);
     line_horizontal(picture);
     line_vertical(picture);
+
+    // Save all letters
+    SDL_Surface **tab = SaveAllLetters(picture);
+    //PourTester DONC ICI A ENLEVER APRES
+    picture = tab[8];
+
 
     //display it
     window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,

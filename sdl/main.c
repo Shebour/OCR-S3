@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <err.h>
 #include "display_picture.h"
+#include "save_char_bitmap.h"
 
 int main(int argc, char **argv){
     init();//init the lib sdl
@@ -13,6 +14,12 @@ int main(int argc, char **argv){
     char *path = argv[1];//get the path of the picture to display
 
     picture = load_picture(path);//load the picture thanks to the path
+
+    //SDL_Surface **tab = SaveAllLetters(picture);
+    //display(tab[0]);
+
+    //SDL_Surface* Surface_Espace = ResizePictureForALetter(picture,34,16,23-16+1,46-34+1);
+    //display(Surface_Espace);//Test to display the letter picture
 
     display(picture);//display the picture
     return 0;
