@@ -49,8 +49,9 @@ void display(SDL_Surface * picture){
 
     // Save all letters
     SDL_Surface **tab = SaveAllLetters(picture);
+    
     //PourTester DONC ICI A ENLEVER APRES
-    picture = tab[8];
+    picture = tab[29];
 
 
     //display it

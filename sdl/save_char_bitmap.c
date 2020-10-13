@@ -6,179 +6,7 @@
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
 #include "display_picture.h"
-
-#define w2 100
-#define h2 100
-
-
-// x = the line of pixel below the first red line
-// y = the column of pixel at the right of the first blue line
-// w = the length between the first blue line and the second blue line
-// h = the length between the first red line and the second red line
-SDL_Surface* ResizePictureForALetter(SDL_Surface *picture, int x,
-        int y, int w, int h)
-{   
-    SDL_Surface* Resize = NULL; 
-
-    Resize = SDL_CreateRGBSurface(0, w, h,32,0,0,0,0); // Create a surface
-    
-   
-    
-    if(Resize == NULL)
-    {
-        errx(1, "impossible creer la surface");   
-    }
-   
-    SDL_Rect srcrect; //rect who 
-    SDL_Rect dstrect;
-
-    srcrect.x = y;
-    srcrect.y = x;
-    srcrect.w = w;
-    srcrect.h = h;
-    dstrect.x = 0;
-    dstrect.y = 0;
-    dstrect.w = 0;
-    dstrect.h = 0;
-
-    SDL_BlitSurface(picture, &srcrect, Resize, &dstrect);
-
-    //SDL_FreeSurface(Resize);
-    //SDL_FreeSurface(picture);
-
-    return Resize;
-}
-
-// Surface 1x1 pixel => It is a space
-SDL_Surface* Espace(void)
-{
-    SDL_Surface* Surface_Espace = NULL;
-
-    Surface_Espace = SDL_CreateRGBSurface(0, 1, 1, 32, 0, 0, 0, 0);
-    
-    if(Surface_Espace == NULL)
-    {
-        errx(1, "impossible creer la surface");   
-    }
-
-    SDL_FillRect(Surface_Espace, NULL, SDL_MapRGB(Surface_Espace->format, 255, 255, 255));
-   
-    /*Uint32 pixel;
-    pixel = SDL_MapRGB(Surface_Espace->format, 0, 255, 0);
-    for(int i = 0; i < h2; i++)
-        set_pixel(Surface_Espace, i, 10, pixel);*/
- 
-
-    return Surface_Espace;
-}
-
-// Surface 2x2 pixel => It is a \n
-SDL_Surface* RetourALaLigne()
-{
-    SDL_Surface* Surface_Espace = NULL;
-
-    Surface_Espace = SDL_CreateRGBSurface(0, 2, 2, 32, 0, 0, 0, 0);
-    
-    if(Surface_Espace == NULL)
-    {
-        errx(1, "impossible creer la surface");   
-    }
-
-    SDL_FillRect(Surface_Espace, NULL, SDL_MapRGB(Surface_Espace->format, 255, 255, 255));
-   
-    /*Uint32 pixel;
-    pixel = SDL_MapRGB(Surface_Espace->format, 0, 255, 0);
-    for(int i = 0; i < h2; i++)
-        set_pixel(Surface_Espace, i, 10, pixel);*/
- 
-
-    return Surface_Espace;
-}
-
-// Surface 3x3 pixel => The text is over
-SDL_Surface* TexteFini()
-{
-    SDL_Surface* Surface_Espace = NULL;
-
-    Surface_Espace = SDL_CreateRGBSurface(0, 3, 3, 32, 0, 0, 0, 0);
-    
-    if(Surface_Espace == NULL)
-    {
-        errx(1, "impossible creer la surface");   
-    }
-
-    SDL_FillRect(Surface_Espace, NULL, SDL_MapRGB(Surface_Espace->format, 255, 255, 255));
-   
-    /*Uint32 pixel;
-    pixel = SDL_MapRGB(Surface_Espace->format, 0, 255, 0);
-    for(int i = 0; i < h2; i++)
-        set_pixel(Surface_Espace, i, 10, pixel);*/
- 
-
-    return Surface_Espace;
-}
-
-// Return 0 if the surface is white, 1 else
-int ItIsAWhiteSurface(SDL_Surface* picture)
-{
-    Uint32 pixel;
-
-    for(int i = 0; i < picture->h; i++)
-    {
-        for(int j = 0; j < picture->w; j++)
-        {
-            Uint8 r, g, b;
-            pixel = get_pixel(picture, j, i);
-            SDL_GetRGB(pixel, picture->format, &r, &g, &b);
-
-            if(r == 0 && g == 0 && b == 0) // If the pixel is black
-                return 1;
-        }
-    }
-    return 0;
-}
-
-// Return j if there is in the line a blue pixel at the right of the startColonne, -1 else
-int ThereIsABluePixel(SDL_Surface* picture, int line, int startColonne)
-{
-    Uint32 pixel;
-
-    for(int j = startColonne; j < picture->w; j++)
-    {
-        Uint8 r, g, b;
-        pixel = get_pixel(picture, j, line);
-        SDL_GetRGB(pixel, picture->format, &r, &g, &b);
-
-        if(r == 0 && g == 0 && b == 255) // If the pixel is blue
-            return j-1;
-    }
-    return -1;
-}
-
-// Return j if there is a blue line, picture->w else
-int FirstBlueLine(SDL_Surface* picture, int line)
-{
-    Uint32 pixel;
-
-    for(int j = 0; j < picture->w; j++)
-    {
-        Uint8 r, g, b;
-        pixel = get_pixel(picture, j, line);
-        SDL_GetRGB(pixel, picture->format, &r, &g, &b);
-
-        if(r == 0 && g == 0 && b == 255) // If the pixel is blue
-            return j+1;
-    }
-    return picture->w;
-}
-
-int SizeOfSpaceBetweenLetters(SDL_Surface* picture)
-{
-    if(picture == NULL)
-        return -1;
-
-    return 3;
-}
+#include "fonctions_for_save_char.h"
 
 SDL_Surface **SaveAllLetters(SDL_Surface* picture)
 {
@@ -189,8 +17,6 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
 
     int FirstRedLigne = 0; // The first red line
     int SecondRedLigne = 0; // The second red line
-
-    //int RetourLigne = 1; // If = 0 there is a \n, 1 else
 
     Uint32 pixel;
 
@@ -240,7 +66,7 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
 
                         RetourLigne = 0;
                     }
-                    else //if(jProvisoire2 >= 3) // Space beetween two letter
+                    else // Space beetween two letter
                     {
                     
                         LettreSurface = ResizePictureForALetter(picture,
@@ -250,9 +76,10 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                         int MaxSpaceBetweenLetters = SizeOfSpaceBetweenLetters(picture);
                         int res = ItIsAWhiteSurface(LettreSurface);
 
-                        if(jProvisoire2 < MaxSpaceBetweenLetters && res == 0)
+                        // If the surface is white and is width is <= to MaxspaceBetween letter
+                        if((jProvisoire2-StartColumn+1) <= MaxSpaceBetweenLetters && res == 0)
                         {
-                            continue;
+                            res = res + 1 - 1;// do nothing because it is a space between letter
                         }
                         else
                         {
@@ -263,8 +90,12 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                             indexDuTableau += 1;
                         }
                     }
-
+                    
+                    /*if(DoubleBlueLine(picture, FirstRedLigne ,jProvisoire2 + 2) == 0)
+                        StartColumn = jProvisoire2 + 3;
+                    else*/
                     StartColumn = jProvisoire2 + 2;
+
                 }
             }
                                         
@@ -276,8 +107,9 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                 //be the FirstRedLine of the next line
         }
 
-        LettreSurface = RetourALaLigne();
-        tableauDeSurface[indexDuTableau-1] = LettreSurface;
+        LettreSurface = RetourALaLigne(); // after the last carater
+        tableauDeSurface[indexDuTableau-1] = LettreSurface; // Change the last surface
+                                        // for a surface with 3 pixel -> end of text
     }
 
     return tableauDeSurface;
