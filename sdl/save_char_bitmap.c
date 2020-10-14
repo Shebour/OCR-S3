@@ -10,7 +10,7 @@
 
 SDL_Surface **SaveAllLetters(SDL_Surface* picture)
 {
-    SDL_Surface **tableauDeSurface = malloc(sizeof(SDL_Surface)*1000);
+    SDL_Surface **tableauDeSurface = malloc(sizeof(SDL_Surface)*10000);
 
     SDL_Surface *LettreSurface = NULL;
     int indexDuTableau = 0;
