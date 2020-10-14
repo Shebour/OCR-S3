@@ -48,10 +48,15 @@ void display(SDL_Surface * picture){
     line_vertical(picture);
 
     // Save all letters
-    //SDL_Surface **tab = SaveAllLetters(picture);
+    SDL_Surface **tab = SaveAllLetters(picture);
+    //printf("test : %d\n",(tab[0])->w);
+    //for(int i = 0; i < 1000; i++)
+        //free(tab[i]);
+    //free(tab);
+
     
     //PourTester DONC ICI A ENLEVER APRES
-    //picture = tab[24];
+    picture = tab[24];
 
 
     //display it

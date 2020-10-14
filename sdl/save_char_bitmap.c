@@ -36,8 +36,7 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
         }
 
         
-        printf("FirstRedLine : %d and SecondRedLine %d\n",FirstRedLigne,SecondRedLigne);
-
+        
         if(FirstRedLigne != 0 && SecondRedLigne != 0 && (SecondRedLigne -
                 FirstRedLigne) != 0)// If we are frame a letters' line and it is not 
                                 //just an underscore line 
@@ -45,8 +44,7 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
             int RetourLigne = 1; // If = 0 there is a \n, 1 else
 
             int jProvisoire = FirstBlueLine(picture,FirstRedLigne);
-            printf("jProvisoire : %d\n", jProvisoire);
-
+            
             int StartColumn = jProvisoire; 
 
             if(jProvisoire != picture->w) // If there is at least one blue line
@@ -55,8 +53,6 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                 {
 
                     int jProvisoire2 = ThereIsABluePixel(picture,FirstRedLigne,StartColumn);
-                    printf("jProvisoire 2 : %d\n", jProvisoire2);
-
 
                     if(jProvisoire2 == -1) // No more letter in the line
                     {
@@ -92,10 +88,10 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                         }
                     }
                     
-                    /*if(DoubleBlueLine(picture, FirstRedLigne ,jProvisoire2 + 2) == 0)
+                    if(DoubleBlueLine(picture, FirstRedLigne ,jProvisoire2 + 2) == 0)
                         StartColumn = jProvisoire2 + 3;
-                    else*/
-                    StartColumn = jProvisoire2 + 2;
+                    else
+                        StartColumn = jProvisoire2 + 2;
 
                 }
             }
