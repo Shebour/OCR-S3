@@ -14,3 +14,4 @@ clean:
 	${RM} *.o 
 	${RM} main
 	${RM} *.d
+	${RM} Lettres/*.bmp
