@@ -1,4 +1,5 @@
 #include "SDL2/SDL.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <err.h>
@@ -49,6 +50,56 @@ void display(SDL_Surface * picture){
 
     // Save all letters
     SDL_Surface **tab = SaveAllLetters(picture);
+    for(int i = 0 ; i < 10; i++)
+    {
+        if(tab[i] == NULL)
+            break;
+        if(i < 10)
+        {
+            char NomLettre[16] = "Lettre/testi.bmp";
+            NomLettre[11] = i;
+
+            if(SDL_SaveBMP(tab[i],NomLettre) != 0)
+                printf("SDL_SaveBMP failed: %s\n",SDL_GetError());
+        }
+        /*
+        else if(10 <= i && i < 100)
+        {
+            char NomLettre[17] = "Lettre/testii.bmp";
+            char j[2];
+            sprintf(j,"%d",i);
+            NomLettre[11] = j[0];
+            NomLettre[12] = j[1];
+
+            if(SDL_SaveBMP(tab[i],NomLettre) != 0)
+                printf("SDL_SaveBMP failed: %s\n",SDL_GetError());
+        }
+        else if(100 <= i && i < 1000)
+        {
+            char NomLettre[18] = "Lettre/testiii.bmp";
+            char j[3];
+            sprintf(j,"%d",i);
+            NomLettre[11] = j[0];
+            NomLettre[12] = j[1];
+            NomLettre[13] = j[2];
+
+            if(SDL_SaveBMP(tab[i],NomLettre) != 0)
+                printf("SDL_SaveBMP failed: %s\n",SDL_GetError());
+        }
+        else if(1000 <= i && i < 10000)
+        {
+            char NomLettre[19] = "Lettre/testiiii.bmp";
+            char j[4];
+            sprintf(j,"%d",i);
+            NomLettre[11] = j[0];
+            NomLettre[12] = j[1];
+            NomLettre[13] = j[2];
+            NomLettre[14] = j[3];
+
+            if(SDL_SaveBMP(tab[i],NomLettre) != 0)
+                printf("SDL_SaveBMP failed: %s\n",SDL_GetError());
+        }*/
+    }
     //printf("test : %d\n",(tab[0])->w);
     //for(int i = 0; i < 1000; i++)
         //free(tab[i]);
@@ -56,7 +107,7 @@ void display(SDL_Surface * picture){
 
     
     //PourTester DONC ICI A ENLEVER APRES
-    picture = tab[24];
+    //picture = tab[24];
 
 
     //display it
