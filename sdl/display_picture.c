@@ -23,6 +23,7 @@ char wait_for_key_pressed(){
     else
         return 'a';    
 }
+
 //Load the image (not especially a bitmap)
 //Die with an error if not
 SDL_Surface * load_picture(char *path){ 
@@ -48,29 +49,20 @@ void display(SDL_Surface * picture){
     line_horizontal(picture);
     line_vertical(picture);
 
-    // Save all letters
+    // Save all letters as a bitmap in the "Lettre" folder
     SDL_Surface **tab = SaveAllLetters(picture);
+
     for(int i = 0 ; i < 10000; i++)
     {
         if(tab[i] == NULL)
             break;
         
         char s[30];
-        snprintf(s, 30, "Lettre/fichier_%d.bmp", i);
+        snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", i);
 
         if(SDL_SaveBMP(tab[i], s) != 0)
-            printf("SDL_SaveBMP failed: %s\n",SDL_GetError());    
+            printf("SDL_SaveBMP failed: %s\n",SDL_GetError()); 
     }
-
-    //printf("test : %d\n",(tab[0])->w);
-    //for(int i = 0; i < 1000; i++)
-        //free(tab[i]);
-    //free(tab);
-
-    
-    //PourTester DONC ICI A ENLEVER APRES
-    //picture = tab[24];
-
 
     //display it
     window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,
@@ -85,6 +77,6 @@ void display(SDL_Surface * picture){
     //Free the memory used to display the picture
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
-    SDL_FreeSurface(picture);
+    //SDL_FreeSurface(picture); // Do not Free Surface otherwise corruption
 }
 

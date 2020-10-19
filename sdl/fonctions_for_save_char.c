@@ -38,7 +38,8 @@ SDL_Surface* ResizePictureForALetter(SDL_Surface *picture, int x,
     dstrect.w = 0;
     dstrect.h = 0;
 
-    SDL_BlitSurface(picture, &srcrect, Resize, &dstrect);
+    if(SDL_BlitSurface(picture, &srcrect, Resize, &dstrect) != 0)
+        printf("SDL_BlitSurface failed: %s\n",SDL_GetError()); 
 
     return Resize;
 }
