@@ -9,6 +9,7 @@
 #include "line.h"
 #include "save_char_bitmap.h"
 #include "display_picture.h"
+
 //Init the rendering management system
 //Die with an error if not
 void init(){

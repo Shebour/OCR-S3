@@ -9,6 +9,8 @@ SRC = *.c
 OBJ = ${SRC: .c=.o}
 
 main: ${OBJ}
+
+directory:
 	mkdir -p Lettres
 
 clean:
