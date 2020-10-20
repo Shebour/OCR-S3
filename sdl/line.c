@@ -4,6 +4,7 @@
 #include <err.h>
 #include "pixel_operations.h"
 #include "trace.h"
+#include "line.h"
 
 void line_horizontal(SDL_Surface *picture)
 {

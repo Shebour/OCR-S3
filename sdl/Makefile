@@ -9,9 +9,10 @@ SRC = *.c
 OBJ = ${SRC: .c=.o}
 
 main: ${OBJ}
+	mkdir -p Lettres
 
 clean:
 	${RM} *.o 
 	${RM} main
 	${RM} *.d
-	${RM} Lettres/*.bmp
+	rm -rf Lettres/

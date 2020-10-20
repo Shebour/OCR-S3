@@ -8,7 +8,7 @@
 #include "color_operations.h"
 #include "line.h"
 #include "save_char_bitmap.h"
-
+#include "display_picture.h"
 //Init the rendering management system
 //Die with an error if not
 void init(){
@@ -16,12 +16,20 @@ void init(){
         errx(1, "Couldn't initialize SDL : %s;\n", SDL_GetError());
 }
 
-char wait_for_key_pressed(){    
-    char key;
-    if (scanf("%c", &key) == 'g')
-        return key;
-    else
-        return 'a';    
+
+void wait_for_keypressed()
+{
+    SDL_Event event;
+
+    do
+    {
+        SDL_PollEvent(&event);
+    } while(event.type != SDL_KEYDOWN);
+
+    do
+    {
+        SDL_PollEvent(&event);
+    } while(event.type != SDL_KEYUP);
 }
 
 //Load the image (not especially a bitmap)
@@ -49,6 +57,15 @@ void display(SDL_Surface * picture){
     line_horizontal(picture);
     line_vertical(picture);
 
+    //display it
+    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED, picture->w, picture->h, 0);
+    renderer = SDL_CreateRenderer(window, -1, 0);
+    texture = SDL_CreateTextureFromSurface(renderer, picture);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+    wait_for_keypressed();
+
     // Save all letters as a bitmap in the "Lettre" folder
     SDL_Surface **tab = SaveAllLetters(picture);
 
@@ -61,22 +78,15 @@ void display(SDL_Surface * picture){
         snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", i);
 
         if(SDL_SaveBMP(tab[i], s) != 0)
-            printf("SDL_SaveBMP failed: %s\n",SDL_GetError()); 
+            printf("Couldn't save BMP: %s\n",SDL_GetError());
     }
 
-    //display it
-    window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED, picture->w, picture->h, 0);
-
-    renderer = SDL_CreateRenderer(window, -1, 0);
-    texture = SDL_CreateTextureFromSurface(renderer, picture);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(5000);
-
+    int i = 0;
+    while(tab[i] != NULL){
+        free(tab[i]);
+        i++;
+    }
     //Free the memory used to display the picture
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
-    //SDL_FreeSurface(picture); // Do not Free Surface otherwise corruption
 }
-

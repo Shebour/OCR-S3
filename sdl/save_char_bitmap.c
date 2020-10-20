@@ -10,7 +10,7 @@
 
 SDL_Surface **SaveAllLetters(SDL_Surface* picture)
 {
-    SDL_Surface **tableauDeSurface = malloc(sizeof(SDL_Surface)*10000);
+    SDL_Surface **tableauDeSurface = malloc(sizeof(SDL_Surface)*100000);
 
     SDL_Surface *LettreSurface = NULL;
     int indexDuTableau = 0;
@@ -108,7 +108,6 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
         tableauDeSurface[indexDuTableau-1] = LettreSurface; // Change the last surface
                                         // for a surface with 3 pixel -> end of text
     }
-
     return tableauDeSurface;
 }
 

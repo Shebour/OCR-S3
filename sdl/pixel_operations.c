@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <err.h>
 #include "SDL2/SDL_image.h"
-
+#include "pixel_operations.h"
 Uint32 get_pixel(SDL_Surface *picture, unsigned x, unsigned y)
 {
     int bpp = picture->format->BytesPerPixel;

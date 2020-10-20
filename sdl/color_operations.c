@@ -4,7 +4,7 @@
 #include <err.h>
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
-
+#include "color_operations.h"
 
 //Transform the picture in a grey scale
 void grey_scale(SDL_Surface *picture){

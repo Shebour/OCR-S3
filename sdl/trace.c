@@ -4,7 +4,7 @@
 #include <err.h>
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
-
+#include "trace.h"
 
 
 /* Draw horizontal red line */

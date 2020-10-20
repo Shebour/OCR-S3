@@ -6,7 +6,7 @@
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
 #include "display_picture.h"
-
+#include "fonctions_for_save_char.h"
 
 // x = the line of pixel below the first red line
 // y = the column of pixel at the right of the first blue line
