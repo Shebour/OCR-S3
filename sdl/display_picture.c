@@ -10,9 +10,10 @@
 #include "save_char_bitmap.h"
 #include "display_picture.h"
 
-//Init the rendering management system
-//Die with an error if not
+
 void init(){
+    //Init the rendering management system
+    //Die with an error if not
     if(SDL_Init(SDL_INIT_VIDEO) == -1)
         errx(1, "Couldn't initialize SDL : %s;\n", SDL_GetError());
 }
@@ -22,27 +23,24 @@ void wait_for_keypressed()
 {
     SDL_Event event;
 
-    do
-    {
+    while(event.type != SDL_KEYDOWN)
         SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYDOWN);
 
-    do
-    {
+    while(event.type != SDL_KEYUP)
         SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYUP);
 }
 
-//Load the image (not especially a bitmap)
-//Die with an error if not
-SDL_Surface * load_picture(char *path){ 
+
+SDL_Surface * load_picture(char *path){
+    //Load the image (not especially a bitmap) from the path 
+    //Die with an error if not
     SDL_Surface *picture;
     if (path != NULL)//check if path as a value
         picture = IMG_Load(path);
     else
-        errx(1, "no path");
+        errx(1, "Path doesn't have a value");
     if (picture == NULL)//check if picture is initialized
-        errx(1, "Could not open the picture : %s", SDL_GetError()); 
+        errx(1, "Couldn't initialize the picture : %s", SDL_GetError()); 
     return picture;
 }
 
@@ -81,7 +79,7 @@ void display(SDL_Surface * picture){
         if(SDL_SaveBMP(tab[i], s) != 0)
             printf("Couldn't save BMP: %s\n",SDL_GetError());
     }
-
+    //Free the memory used by the letters array
     int i = 0;
     while(tab[i] != NULL){
         free(tab[i]);

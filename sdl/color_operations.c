@@ -6,8 +6,9 @@
 #include "pixel_operations.h"
 #include "color_operations.h"
 
-//Transform the picture in a grey scale
+
 void grey_scale(SDL_Surface *picture){
+    //Transform the picture in a grey scale
     Uint32 pixel;
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){
@@ -26,9 +27,10 @@ void grey_scale(SDL_Surface *picture){
     }
 }
 
-//Transform the picture in black and white
-//Same procedure as grey_scale
-void black_white(SDL_Surface *picture){ 
+
+void black_white(SDL_Surface *picture){
+    //Transform the picture in black and white
+    //Same procedure as grey_scale
     Uint32 pixel;
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){

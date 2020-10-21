@@ -4,11 +4,14 @@
 #include <err.h>
 #include "SDL2/SDL_image.h"
 #include "pixel_operations.h"
+
 Uint32 get_pixel(SDL_Surface *picture, unsigned x, unsigned y)
 {
+    //Check the format of each pixel and the pixel at position x, y
     int bpp = picture->format->BytesPerPixel;
     Uint8 *p = (Uint8 *)picture->pixels + y * picture->pitch + x * bpp;
 
+    //Check witch format it is and return the good value of the pixel
     switch (bpp)
     {
         case 1:
@@ -37,8 +40,10 @@ Uint32 get_pixel(SDL_Surface *picture, unsigned x, unsigned y)
 
 void set_pixel(SDL_Surface *picture, unsigned x, unsigned y, Uint32 pixel){
 
+    //Set the pixel "pixel" at the position x, y
     Uint8 *p = (Uint8 *)picture->pixels + y * picture->pitch
         + x * picture->format->BytesPerPixel;
+    //Check the numbers of bytes using for the pixel to cast the pixel into the good format
     switch(picture->format->BytesPerPixel){
         case 1:
             *p = pixel;
