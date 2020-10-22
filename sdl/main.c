@@ -13,9 +13,10 @@ int main(int argc, char **argv){
     SDL_Surface * picture;
     char *path = argv[1];//get the path of the picture to display
 
-    picture = load_picture(path);//load the picture thanks to the path
-
+    load_picture(path,picture);//load the picture thanks to the path
     display(picture);//display the picture
+    
+    free(path);//Free the memory used by the path
     SDL_FreeSurface(picture);//Free the memory used by the picture
     return 0;
 }

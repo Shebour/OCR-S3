@@ -31,17 +31,16 @@ void wait_for_keypressed()
 }
 
 
-SDL_Surface * load_picture(char *path){
+void load_picture(char *path, SDL_Surface * picture){
     //Load the image (not especially a bitmap) from the path 
     //Die with an error if not
-    SDL_Surface *picture;
     if (path != NULL)//check if path as a value
         picture = IMG_Load(path);
     else
         errx(1, "Path doesn't have a value");
     if (picture == NULL)//check if picture is initialized
         errx(1, "Couldn't initialize the picture : %s", SDL_GetError()); 
-    return picture;
+    //return picture;
 }
 
 

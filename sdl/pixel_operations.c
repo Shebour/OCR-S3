@@ -41,10 +41,11 @@ Uint32 get_pixel(SDL_Surface *picture, unsigned x, unsigned y)
 void set_pixel(SDL_Surface *picture, unsigned x, unsigned y, Uint32 pixel){
 
     //Set the pixel "pixel" at the position x, y
+    int bpp = picture->format->BytesPerPixel;
     Uint8 *p = (Uint8 *)picture->pixels + y * picture->pitch
-        + x * picture->format->BytesPerPixel;
+        + x * bpp;
     //Check the numbers of bytes using for the pixel to cast the pixel into the good format
-    switch(picture->format->BytesPerPixel){
+    switch(bpp){
         case 1:
             *p = pixel;
             break;
