@@ -113,7 +113,7 @@ void SaveAllLetters(SDL_Surface* picture)
         }
         char s[30];
         snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau-1);
-        remove(s);
+        //remove(s);
     }
 }
 
