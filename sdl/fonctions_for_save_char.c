@@ -140,7 +140,7 @@ int SizeOfSpaceBetweenLetters(int FirstRedLine, int SecondRedLine)
     int result = SecondRedLine - FirstRedLine + 1;
     
     if(result >= 20)
-        return result/4;
+        return result/4.5;
     else
         return result/7;
 }
