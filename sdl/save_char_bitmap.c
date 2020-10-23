@@ -57,18 +57,18 @@ void SaveAllLetters(SDL_Surface* picture)
                     {
                         LettreSurface = RetourALaLigne();
 
-			char s[30];
-			snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
-			if (SDL_SaveBMP(LettreSurface, s) != 0)
-				printf("Couldn't save BMP: %s\n", SDL_GetError());
+                        char s[30];
+                        snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
+                        if (SDL_SaveBMP(LettreSurface, s) != 0)
+                            printf("Couldn't save BMP: %s\n", SDL_GetError());
 
-			indexDuTableau += 1;
+                        indexDuTableau += 1;
 
                         RetourLigne = 0;
                     }
                     else // Space beetween two letter
                     {
-                    
+
                         LettreSurface = ResizePictureForALetter(picture,
                             FirstRedLigne, StartColumn,jProvisoire2-StartColumn+1,
                             SecondRedLigne-FirstRedLigne+1);
@@ -87,15 +87,15 @@ void SaveAllLetters(SDL_Surface* picture)
                             if(res == 0)
                                 LettreSurface = Espace();
 
-			    char s[30];
-			    snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
-			    if (SDL_SaveBMP(LettreSurface, s) != 0)
-				printf("Couldn't save BMP: %s\n", SDL_GetError());
-                            
+                            char s[30];
+                            snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
+                            if (SDL_SaveBMP(LettreSurface, s) != 0)
+                                printf("Couldn't save BMP: %s\n", SDL_GetError());
+
                             indexDuTableau += 1;
                         }
                     }
-                    
+
                     if(DoubleBlueLine(picture, FirstRedLigne ,jProvisoire2 + 2) == 0)
                         StartColumn = jProvisoire2 + 3;
                     else
@@ -103,7 +103,7 @@ void SaveAllLetters(SDL_Surface* picture)
 
                 }
             }
-                                        
+
             // resetting variables
             FirstRedLigne = 0;
             SecondRedLigne = 0;
@@ -111,10 +111,9 @@ void SaveAllLetters(SDL_Surface* picture)
             i-=1; // To test again the SecondRedLine because she can in the same time 
                 //be the FirstRedLine of the next line
         }
-	char s[30];
-	snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau-1);
-	
-	remove(s);
+        char s[30];
+        snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau-1);
+        remove(s);
     }
 }
 
