@@ -8,9 +8,8 @@
 #include "display_picture.h"
 #include "fonctions_for_save_char.h"
 
-SDL_Surface **SaveAllLetters(SDL_Surface* picture)
+void SaveAllLetters(SDL_Surface* picture)
 {
-    SDL_Surface **tableauDeSurface = malloc(sizeof(SDL_Surface*)*2000);
 
     SDL_Surface *LettreSurface = NULL;
     int indexDuTableau = 0;
@@ -35,8 +34,8 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                 SecondRedLigne = i-1;
         }
 
-        
-        
+
+
         if(FirstRedLigne != 0 && SecondRedLigne != 0 && (SecondRedLigne -
                 FirstRedLigne) != 0)// If we are frame a letters' line and it is not 
                                 //just an underscore line 
@@ -44,7 +43,7 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
             int RetourLigne = 1; // If = 0 there is a \n, 1 else
 
             int jProvisoire = FirstBlueLine(picture,FirstRedLigne);
-            
+
             int StartColumn = jProvisoire; 
 
             if(jProvisoire != picture->w) // If there is at least one blue line
@@ -57,8 +56,13 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                     if(jProvisoire2 == -1) // No more letter in the line
                     {
                         LettreSurface = RetourALaLigne();
-                        tableauDeSurface[indexDuTableau] = LettreSurface;
-                        indexDuTableau += 1;
+
+			char s[30];
+			snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
+			if (SDL_SaveBMP(LettreSurface, s) != 0)
+				printf("Couldn't save BMP: %s\n", SDL_GetError());
+
+			indexDuTableau += 1;
 
                         RetourLigne = 0;
                     }
@@ -83,7 +87,11 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
                             if(res == 0)
                                 LettreSurface = Espace();
 
-                            tableauDeSurface[indexDuTableau] = LettreSurface;
+			    char s[30];
+			    snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
+			    if (SDL_SaveBMP(LettreSurface, s) != 0)
+				printf("Couldn't save BMP: %s\n", SDL_GetError());
+                            
                             indexDuTableau += 1;
                         }
                     }
@@ -103,11 +111,10 @@ SDL_Surface **SaveAllLetters(SDL_Surface* picture)
             i-=1; // To test again the SecondRedLine because she can in the same time 
                 //be the FirstRedLine of the next line
         }
-
-        LettreSurface = RetourALaLigne(); // after the last carater
-        tableauDeSurface[indexDuTableau-1] = LettreSurface; // Change the last surface
-                                        // for a surface with 3 pixel -> end of text
+	char s[30];
+	snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau-1);
+	
+	remove(s);
     }
-    return tableauDeSurface;
 }
 

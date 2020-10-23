@@ -13,6 +13,8 @@ main: ${OBJ}
 directory:
 	mkdir -p Lettres
 
+all: main directory
+
 clean:
 	${RM} *.o 
 	${RM} main

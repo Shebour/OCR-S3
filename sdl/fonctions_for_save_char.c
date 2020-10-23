@@ -78,22 +78,6 @@ SDL_Surface* RetourALaLigne()
     return Surface_Espace;
 }
 
-// Surface 3x3 pixel => The text is over
-SDL_Surface* TexteFini()
-{
-    SDL_Surface* Surface_Espace = NULL;
-
-    Surface_Espace = SDL_CreateRGBSurface(0, 3, 3, 32, 0, 0, 0, 0);
-    
-    if(Surface_Espace == NULL)
-    {
-        errx(1, "impossible creer la surface");   
-    }
-
-    SDL_FillRect(Surface_Espace, NULL, SDL_MapRGB(Surface_Espace->format, 255, 255, 255));
-
-    return Surface_Espace;
-}
 
 // Return 0 if the surface is white, 1 else
 int ItIsAWhiteSurface(SDL_Surface* picture)

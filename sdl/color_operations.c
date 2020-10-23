@@ -89,7 +89,7 @@ void reduce_noise(SDL_Surface *picture){
             //Get the current pixel
             Uint32 pixel = get_pixel(picture, i, j);
             //Get the new color
-            pixel = average(picture, i, j, 5);
+            pixel = average(picture, i, j, 1);
             //Set the new color in the pixel
             set_pixel(picture, i, j, pixel);
         }

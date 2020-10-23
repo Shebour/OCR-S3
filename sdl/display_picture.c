@@ -65,27 +65,9 @@ void display(SDL_Surface * picture){
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     wait_for_keypressed();
-
+    
     // Save all letters as a bitmap in the "Lettre" folder
-    SDL_Surface **tab = SaveAllLetters(picture);
-
-    for(int i = 0 ; i < 10000; i++)
-    {
-        if(tab[i] == NULL)
-            break;
-        
-        char s[30];
-        snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", i);
-
-        if(SDL_SaveBMP(tab[i], s) != 0)
-            printf("Couldn't save BMP: %s\n",SDL_GetError());
-    }
-    //Free the memory used by the letters array
-    int i = 0;
-    while(tab[i] != NULL){
-        free(tab[i]);
-        i++;
-    }
+    SaveAllLetters(picture);
     //Free the memory used to display the picture
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
