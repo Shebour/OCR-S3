@@ -12,6 +12,12 @@ double get_random()
     return (double)rand()/(double)(RAND_MAX);
 }
 
+void layer_init_random(struct Layer *l)
+{
+    matrix_map_inplace(l->weights, *get_random);
+    matrix_map_inplace(l->biases, *get_random);
+}
+
 void layer_alloc(struct Layer *l, size_t nb_in, size_t nb_neurons)
 {
     l->nb_neurons = nb_neurons;
@@ -20,6 +26,8 @@ void layer_alloc(struct Layer *l, size_t nb_in, size_t nb_neurons)
     l->biases = matrix_init(nb_neurons, 1);
     l->out = matrix_init(nb_neurons, 1);
     l->delta = matrix_init(nb_neurons, 1);
+
+    layer_init_random(l);
 }
 
 void layer_free(struct Layer *l)
@@ -29,13 +37,6 @@ void layer_free(struct Layer *l)
     matrix_free(l->weights);
     matrix_free(l->biases);
     matrix_free(l->delta);
-    free(l);
-}
-
-void layer_init_random(struct Layer *l)
-{
-    matrix_map_inplace(l->weights, *get_random);
-    matrix_map_inplace(l->biases, *get_random);
 }
 
 struct Network *network_alloc(size_t nb_layers, size_t *layers_size)
