@@ -152,3 +152,36 @@ struct Matrix *matrix_T(struct Matrix *m)
 
     return res;
 }
+
+void matrix_save(FILE *f, struct Matrix *m)
+{
+    fwrite(&m->rows, sizeof(size_t), 1, f);
+    fwrite(&m->cols, sizeof(size_t), 1, f);
+    fwrite(m->data, sizeof(double), m->rows * m->cols, f);
+}
+
+struct Matrix *matrix_load(FILE *f)
+{
+    size_t rows = 0ul;
+    size_t cols = 0ul;
+    fread(&rows, sizeof(size_t), 1, f);
+    fread(&cols, sizeof(size_t), 1, f);
+    struct Matrix *m = matrix_init(rows, cols);
+    m->rows = rows;
+    m->cols = cols;
+    fread(m->data, sizeof(double), cols * rows, f);
+
+    return m;
+}
+
+void matrix_load_inplace(FILE *f, struct Matrix *m)
+{
+    size_t rows = 0ul;
+    size_t cols = 0ul;
+    fread(&rows, sizeof(size_t), 1, f);
+    fread(&cols, sizeof(size_t), 1, f);
+    if (rows != m->rows || cols != m->cols)
+        errx(1, "matrix_load_inplace: dimension mismatch");
+
+    fread(m->data, sizeof(double), rows * cols, f);
+}

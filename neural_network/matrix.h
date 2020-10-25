@@ -29,4 +29,9 @@ void matrix_map_inplace(struct Matrix *m, double (*f)(double));
 struct Matrix *matrix_copy(struct Matrix *m);
 struct Matrix *matrix_T(struct Matrix *m);
 
+
+void matrix_save(FILE *f, struct Matrix *m);
+struct Matrix *matrix_load(FILE *f);
+void matrix_load_inplace(FILE *f, struct Matrix *m);
+
 #endif

@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror -std=c99 -g
+CFLAGS = -Wall -Wextra -Werror -Wno-unused-result -std=c99 -g
 LDFLAGS = -fsanitize=address
 LDLIBS  = -lm
 BIN = main
