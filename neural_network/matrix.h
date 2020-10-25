@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <err.h>
+#include <string.h>
 
 struct Matrix {
     double *data;
@@ -25,5 +26,6 @@ struct Matrix *matrix_mult(struct Matrix *m1, struct Matrix *m2);
 struct Matrix *matrix_mult_each(struct Matrix *m1, struct Matrix *m2);
 struct Matrix *matrix_map(struct Matrix *m, double (*f)(double));
 void matrix_map_inplace(struct Matrix *m, double (*f)(double));
+struct Matrix *matrix_copy(struct Matrix *m);
 
 #endif

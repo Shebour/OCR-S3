@@ -135,3 +135,10 @@ void matrix_map_inplace(struct Matrix *m, double (*f)(double))
         for (size_t j = 0; j < m->cols; ++j)
             matrix_set(m, i, j, f(matrix_get(m, i, j)));
 }
+
+struct Matrix *matrix_copy(struct Matrix *m)
+{
+    struct Matrix *new = matrix_init(m->rows, m->cols);
+    memcpy(new->data, m->data, m->rows * m->cols);
+    return new;
+}
