@@ -1,0 +1,6 @@
+#! /bin/sh
+
+[ "$#" -ne 2 ] && printf 'usage : \n\t./ocr extraction <path>\n\t./ocr xor run\n' && exit 1
+
+[ "$1" == "extraction" ] && ( cd sdl/ && ./main $2 ) && exit 0
+[ "$1" == "xor" ] && ( cd neural_network/ && ./main ) && exit 0
