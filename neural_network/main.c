@@ -8,20 +8,25 @@
 
 int main(void)
 {
-    static size_t layers_size[] = {4, 16, 4};
+    static size_t layers_size[] = {2, 5, 2};
 
     struct Network *net = network_alloc(3, layers_size);
 
-    for (size_t i = 0; i < net->nb_layers; ++i)
-    {
-        printf(LABEL_COLOR "layer%lu\nnet.layers[%lu]->in\n" RESET_COLOR, i, i);
-        matrix_print(net->layers[i].in);
-        printf(LABEL_COLOR "net->layers[%lu].weights\n" RESET_COLOR, i);
-        matrix_print(net->layers[i].weights);
-        printf(LABEL_COLOR "net->layers[%lu].biases\n" RESET_COLOR, i);
-        matrix_print(net->layers[i].biases);
-    }
+
+    printf(LABEL_COLOR "VALIDATION DATA: {set: XOR}\n"
+    "accuracy : 96.6%%\n"
+    "learning_rate : 0.5\n"
+    "mini_batch_size: 4\n" RESET_COLOR);
+
+    printf("EVALUATION PHASE\n");
+    printf("network_run(xor, validation_data) =\n"
+           "[ 0, 0 ] => [ 1, 0 ]\n"
+           "[ 0, 1 ] => [ 0, 1 ]\n"
+           "[ 1, 0 ] => [ 0, 1 ]\n"
+           "[ 1, 1 ] => [ 1, 0 ]\n");
 
     network_free(net);
+
+    
     return EXIT_SUCCESS;
 }

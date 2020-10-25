@@ -185,3 +185,13 @@ void matrix_load_inplace(FILE *f, struct Matrix *m)
 
     fread(m->data, sizeof(double), rows * cols, f);
 }
+
+size_t matrix_max(struct Matrix *m)
+{
+    size_t max = 0;
+    for (size_t i = 0; i < m->rows * m->cols; ++i)
+        if (m->data[i] > m->data[max])
+            max = i;
+
+    return max;
+}

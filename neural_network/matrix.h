@@ -33,5 +33,6 @@ struct Matrix *matrix_T(struct Matrix *m);
 void matrix_save(FILE *f, struct Matrix *m);
 struct Matrix *matrix_load(FILE *f);
 void matrix_load_inplace(FILE *f, struct Matrix *m);
+size_t matrix_max(struct Matrix *m);
 
 #endif
