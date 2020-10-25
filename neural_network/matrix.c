@@ -142,3 +142,13 @@ struct Matrix *matrix_copy(struct Matrix *m)
     memcpy(new->data, m->data, m->rows * m->cols);
     return new;
 }
+
+struct Matrix *matrix_T(struct Matrix *m)
+{
+    struct Matrix *res = matrix_init(m->cols, m->rows);
+    for (size_t i = 0; i < m->rows; ++i)
+        for (size_t j = 0; j < m->cols; ++j)
+            matrix_set(res, j, i, matrix_get(m, i, j));
+
+    return res;
+}
