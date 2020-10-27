@@ -24,6 +24,6 @@ int main(int argc, char **argv){
         display(picture, 1);
     }
     SDL_FreeSurface(picture);//Free the memory used by the picture
-
+    SDL_Quit(); //Free the memory used by the SDL lib
     return 0;
 }
