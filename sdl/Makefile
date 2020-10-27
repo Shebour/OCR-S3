@@ -3,7 +3,7 @@ CC=gcc
 CPPFLAGS= `pkg-config --cflags sdl2` -MMD
 CLFAGS= -Wall -Wextra -Werror -std=c99 -O1
 LDFLAGS=
-LDLIBS= `pkg-config --libs sdl2` -lSDL2_image
+LDLIBS= `pkg-config --libs sdl2` -lSDL2_image -lm
 
 SRC = *.c
 OBJ = ${SRC: .c=.o}

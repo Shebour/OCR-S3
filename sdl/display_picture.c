@@ -46,16 +46,20 @@ SDL_Surface * load_picture(char *path){
 
 
 //display the picture
-void display(SDL_Surface * picture){
+void display(SDL_Surface * picture, int rot){
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     //transform the picture
-    reduce_noise(picture);
-    grey_scale(picture);
-    black_white(picture);
-    line_horizontal(picture);
-    line_vertical(picture);
+    if (!rot)
+    {
+        reduce_noise(picture);
+        grey_scale(picture);
+        black_white(picture);
+        line_horizontal(picture);
+        line_vertical(picture);
+    }
+
     
     //display it
     window = SDL_CreateWindow("OCR", SDL_WINDOWPOS_CENTERED,
@@ -67,7 +71,8 @@ void display(SDL_Surface * picture){
     wait_for_keypressed();
     
     // Save all letters as a bitmap in the "Lettre" folder
-    SaveAllLetters(picture);
+    if (!rot)
+        SaveAllLetters(picture);
     //Free the memory used to display the picture
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(texture);
