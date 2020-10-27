@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "matrix.h"
 #include "network.h"
 
@@ -17,6 +18,7 @@ int main(void)
     "accuracy : 96.6%%\n"
     "learning_rate : 0.5\n"
     "mini_batch_size: 4\n" RESET_COLOR);
+    sleep(3);
 
     printf("EVALUATION PHASE\n");
     printf("network_run(xor, validation_data) =\n"
