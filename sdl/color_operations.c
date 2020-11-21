@@ -55,7 +55,40 @@ void black_white(SDL_Surface *picture){
     } 
 }
 
-Uint32 average(SDL_Surface * picture, int i, int j, int n){
+int partition(Uint32 arr[], int begin, int end)
+{
+   Uint32 pivot = arr[end];
+   int i = begin - 1;
+   for (int j = begin; j < end; j++)
+   {
+        if (arr[j] < pivot)
+        {
+            i++;
+            Uint32 temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+   }
+   Uint32 temp = arr[i+1];
+   arr[i+1] = arr[end];
+   arr[end] = temp;
+   return i+1;
+}
+
+void quicksort(Uint32 arr[], int begin, int end)
+{
+    if (begin < end)
+    {
+        int pi = partition(arr, begin, end);
+
+        quicksort(arr, begin, pi -1);
+        quicksort(arr, pi + 1, end);
+    }
+}
+
+
+
+Uint32 mediane(SDL_Surface * picture, int i, int j, int n){
     //Set the size of the surface to cover
     int initial_h = i;
     int initial_w = j;
@@ -65,20 +98,28 @@ Uint32 average(SDL_Surface * picture, int i, int j, int n){
     int nb_pixel = n * n;
     Uint32 pixel;
     Uint8 r, g, b;
-    Uint32 r_sum = 0, g_sum = 0, b_sum = 0;
+    Uint32 r_list[nb_pixel];
+    Uint32 g_list[nb_pixel]; 
+    Uint32 b_list[nb_pixel];
+    int index = 0;
     //Go through the picture
     for (i = initial_h; i < final_h; i++){
         for (j = initial_w; j < final_w; j++){
             pixel = get_pixel(picture, i , j);
             SDL_GetRGB(pixel, picture->format, &r, &g, &b);
             //Sum each colors value of each pixels in the area
-            r_sum += r;
-            g_sum += g;
-            b_sum += b;
+            r_list[index] = r;
+            g_list[index] = g;
+            b_list[index] = b;
+            index++;
         }
     }
     //Get the new color
-    pixel = SDL_MapRGB(picture->format, (int)(r / nb_pixel), (int) (g_sum / nb_pixel), (int)(b_sum / nb_pixel));
+    quicksort(r_list, 0, nb_pixel);
+    quicksort(g_list, 0, nb_pixel);
+    quicksort(b_list, 0, nb_pixel);
+
+    pixel = SDL_MapRGB(picture->format, (int)(r_list[nb_pixel / 2 + 1]), (int) (g_list[nb_pixel / 2 + 1]), (int)(b_list[nb_pixel / 2 + 1]));
     return pixel;
 }
 
@@ -89,7 +130,7 @@ void reduce_noise(SDL_Surface *picture){
             //Get the current pixel
             Uint32 pixel = get_pixel(picture, i, j);
             //Get the new color
-            pixel = average(picture, i, j, 1);
+            pixel = mediane(picture, i, j, 3);
             //Set the new color in the pixel
             set_pixel(picture, i, j, pixel);
         }

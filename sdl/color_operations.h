@@ -3,6 +3,6 @@
 
 void grey_scale(SDL_Surface *picture);
 void black_white(SDL_Surface *picture);
-Uint32 average(SDL_Surface *picture, int i, int j, int n);
+Uint32 mediane(SDL_Surface *picture, int i, int j, int n);
 void reduce_noise(SDL_Surface *picture);
 #endif
