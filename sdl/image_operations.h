@@ -1,6 +1,7 @@
 #ifndef IMAGE_OPERATIONS_H
 #define IMAGE_OPERATIONS_H
 
-SDL_Surface* SDL_Rotation(SDL_Surface * picture, float angle);
+void rotation(SDL_Texture *texture, SDL_Renderer *renderer,
+        SDL_Rect srcR, SDL_Rect dstR, double angle);
 
 #endif

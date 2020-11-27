@@ -12,15 +12,15 @@ int main(int argc, char **argv){
     if (argc < 2)//two args to start, die with an error message if not
         errx(1, "Too few arguments");
 
-    SDL_Surface * picture;
-
+    SDL_Surface *picture;
+    SDL_Surface *rotation;
     char *path = argv[1];//get the path of the picture to display
     picture = load_picture(path);//load the picture thanks to the path
     display(picture, 0);//display the picture
-
+    
     if (argc == 3)
     {
-        picture = SDL_Rotation(picture, atoi(argv[2]));
+        
         display(picture, 1);
     }
     SDL_FreeSurface(picture);//Free the memory used by the picture
