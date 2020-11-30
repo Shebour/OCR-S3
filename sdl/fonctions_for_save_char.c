@@ -163,8 +163,6 @@ int DoubleBlueLine(SDL_Surface* picture, int line, int column)
 
 void ResizeBetter(SDL_Surface *Lettre, char *path)
 {
-    printf("ResizeBetter : \n");
-
     //SDL_Surface *Lettre = load_picture(path);
    
     int x2 = 0;

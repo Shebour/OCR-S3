@@ -118,8 +118,10 @@ Uint32 mediane(SDL_Surface * picture, int i, int j, int n){
     quicksort(r_list, 0, nb_pixel);
     quicksort(g_list, 0, nb_pixel);
     quicksort(b_list, 0, nb_pixel);
-
-    pixel = SDL_MapRGB(picture->format, (int)(r_list[nb_pixel / 2 + 1]), (int) (g_list[nb_pixel / 2 + 1]), (int)(b_list[nb_pixel / 2 + 1]));
+    if (nb_pixel % 2 == 0)
+        pixel = SDL_MapRGB(picture->format, (int)(r_list[nb_pixel / 2]), (int) (g_list[nb_pixel / 2]), (int)(b_list[nb_pixel / 2]));
+    else
+        pixel = SDL_MapRGB(picture->format, (int) (r_list[nb_pixel / 2 + 1]), (int) (g_list[nb_pixel / 2 + 1]), (int)(b_list[nb_pixel / 2 + 1]));
     return pixel;
 }
 
@@ -130,7 +132,7 @@ void reduce_noise(SDL_Surface *picture){
             //Get the current pixel
             Uint32 pixel = get_pixel(picture, i, j);
             //Get the new color
-            pixel = mediane(picture, i, j, 3);
+            pixel = mediane(picture, i, j, 2);
             //Set the new color in the pixel
             set_pixel(picture, i, j, pixel);
         }
