@@ -17,3 +17,16 @@ void rotation(SDL_Texture *texture,
     SDL_RenderCopyEx(renderer, texture, &srcR, &dstR, angle, &center, SDL_FLIP_NONE);
     SDL_RenderPresent(renderer);
 }
+
+void surface_to_matrix(SDL_Surface *picture)
+{
+    Uint32 matrix[picture->w][picture->h];
+    for (unsigned i = 0; i < picture->w; i++)
+    {
+        for (unsigned j = 0; j < picture->h; j++)
+        {
+            matrix[i][j] = get_pixel(picture, i, j);
+            //printf("matrix[%u][%u] : %lu\n", i, j, matrix[i][j]);
+        }
+    }
+}

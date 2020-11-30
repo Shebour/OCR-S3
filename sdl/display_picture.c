@@ -82,7 +82,7 @@ void display(SDL_Surface * picture, int rot){
 
     if (rot)
     {
-        double angle = 45;
+        double angle = 360;
         
         //rotation(texture, renderer, srcR, dstR, angle);
         SDL_Surface *new_pic = rotozoomSurface(picture, angle, 1.0, 0);
@@ -94,6 +94,7 @@ void display(SDL_Surface * picture, int rot){
         SDL_RenderPresent(renderer); 
         wait_for_keypressed();
         SDL_FreeSurface(new_pic);
+        surface_to_matrix(picture);
     }
 
     // Save all letters as a bitmap in the "Lettre" folder
