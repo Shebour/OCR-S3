@@ -84,13 +84,20 @@ void SaveAllLetters(SDL_Surface* picture)
                         }
                         else
                         {
+
+                            char s[60];
+                            snprintf(s, 60, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
+
                             if(res == 0)
+                            {
                                 LettreSurface = Espace();
 
-                            char s[30];
-                            snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau);
-                            if (SDL_SaveBMP(LettreSurface, s) != 0)
-                                printf("Couldn't save BMP: %s\n", SDL_GetError());
+                                if (SDL_SaveBMP(LettreSurface, s) != 0)
+                                    printf("Couldn't save BMP: %s\n", SDL_GetError());
+
+                            }
+                            else
+                                ResizeBetter(LettreSurface,s);
 
                             indexDuTableau += 1;
                         }
@@ -112,7 +119,7 @@ void SaveAllLetters(SDL_Surface* picture)
                 //be the FirstRedLine of the next line
         }
         char s[30];
-        snprintf(s, 30, "Lettres/LettreNumero_%d.bmp", indexDuTableau-1);
+        snprintf(s, 30, "LettreNumero_%d.bmp", indexDuTableau-1);
         //remove(s);
     }
 }

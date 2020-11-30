@@ -12,5 +12,6 @@ int ThereIsABluePixel(SDL_Surface* picture, int ligne, int startColonne);
 int FirstBlueLine(SDL_Surface* picture, int line);
 int SizeOfSpaceBetweenLetters(int FisrtRedLigne, int SecondRedLigne);
 int DoubleBlueLine(SDL_Surface* picture, int line, int column);
+void ResizeBetter(SDL_Surface *Lettre, char *path);
 
 #endif

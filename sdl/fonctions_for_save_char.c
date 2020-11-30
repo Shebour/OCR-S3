@@ -161,3 +161,125 @@ int DoubleBlueLine(SDL_Surface* picture, int line, int column)
     return 1;
 }
 
+void ResizeBetter(SDL_Surface *Lettre, char *path)
+{
+    printf("ResizeBetter : \n");
+
+    //SDL_Surface *Lettre = load_picture(path);
+   
+    int x2 = 0;
+    int h2 = 0;
+
+    int FirstLigne = 1;
+    int check_accent_or_i = 0;
+    Uint32 pixel;
+
+    int i = 0;
+    while(i < Lettre->h)
+    {
+
+        if(FirstLigne == 1) // If it is a line above letters
+        {
+            for(int j = 0; j < Lettre->w; j++)
+            {
+                Uint8 r, g, b;
+                pixel = get_pixel(Lettre, j, i);
+                SDL_GetRGB(pixel, Lettre->format, &r, &g, &b);
+
+                if(r == 0 && g == 0 && b == 0) // If the pixel is black
+                {
+                    /*if(i != 0)
+                       trace_horizontal(picture,i-1);// See trace.c*/
+
+                    x2 = i;
+
+                    FirstLigne = 0;
+                    break;
+                }
+            }
+        }
+
+        if(FirstLigne == 0)
+        {
+            int ThereIsABlackPixel = 0;
+
+            for(int j = 0; j < Lettre->w; j++)
+            {
+                Uint8 r, g, b;
+                pixel = get_pixel(Lettre, j, i);
+                SDL_GetRGB(pixel, Lettre->format, &r, &g, &b);
+
+                if(r == 0 && g == 0 && b == 0) // If the pixel is black
+                {
+                    ThereIsABlackPixel = 1;
+                    break;
+                }
+            }
+
+            // If there is no black pixel in the line
+            if(ThereIsABlackPixel == 0)
+            {
+                //trace_horizontal(picture,i); // See trace.c
+                
+                h2 = i-x2;
+                check_accent_or_i = 1;
+
+                FirstLigne = 2;
+            }
+        }
+
+        if(check_accent_or_i == 1)
+        {
+            for(int j = 0; j < Lettre->w; j++)
+            {
+                Uint8 r, g, b;
+                pixel = get_pixel(Lettre, j, i);
+                SDL_GetRGB(pixel, Lettre->format, &r, &g, &b);
+
+                if(r == 0 && g == 0 && b == 0) // If the pixel is black
+                {
+                   h2 = 0;
+                   check_accent_or_i = 0;
+                   FirstLigne = 0;
+                   break;
+                }
+            }
+        }
+        i++;
+    }
+
+    if(h2 == 0)
+        h2 = Lettre->h;
+
+    // Surface with the letter stretched
+    SDL_Surface* Resize = NULL;
+    Resize = SDL_CreateRGBSurface(0, 32, 32,32,0,0,0,0); // Create a surface
+    SDL_FillRect(Resize, NULL, SDL_MapRGB(Resize->format, 255, 255, 255));
+    if(Resize == NULL)
+    {
+        errx(1, "impossible creer la surface");
+    }
+
+    // Image to stretched
+    SDL_Rect srcrect;
+    srcrect.x = 0;
+    srcrect.y = x2;//x2
+    srcrect.w = Lettre->w;
+    srcrect.h = h2;//h2
+
+    //Apply the image stretched
+	SDL_Rect dstrect;
+	dstrect.x = 16-(Lettre->w/2);//2
+	dstrect.y = 16-(h2/2);//2
+	dstrect.w = Lettre->w;//26
+	dstrect.h = h2;//26
+
+    if(SDL_BlitSurface(Lettre, &srcrect, Resize, &dstrect) != 0)
+        printf("SDL_BlitSurface failed: %s\n",SDL_GetError());
+
+    if(SDL_SaveBMP(Resize, path) != 0)
+        printf("Couldn't save BMP: %s\n", SDL_GetError());
+
+}
+
+
