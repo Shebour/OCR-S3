@@ -16,7 +16,8 @@ int main(int argc, char **argv){
     SDL_Surface *rotation;
     char *path = argv[1];//get the path of the picture to display
     picture = load_picture(path);//load the picture thanks to the path
-    display(picture, 0);//display the picture
+    if (argc == 2)
+        display(picture, 0);//display the picture
     
     if (argc == 3)
     {

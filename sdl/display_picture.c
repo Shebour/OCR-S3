@@ -10,7 +10,6 @@
 #include "save_char_bitmap.h"
 #include "display_picture.h"
 #include "image_operations.h"
-#include "SDL2/SDL2_rotozoom.h"
 
 void init(){
     //Init the rendering management system
@@ -56,14 +55,11 @@ void display(SDL_Surface * picture, int rot){
     SDL_Rect srcR = {0, 0, 0, 0};
     SDL_Rect dstR = {1920 / 2 - picture->w / 2, 1080 / 2 - picture->h / 2, picture->w, picture->h};
     //transform the picture
-    if (!rot)
-    {
-        reduce_noise(picture);
-        grey_scale(picture);
-        black_white(picture);
-        line_horizontal(picture);
-        line_vertical(picture);
-    }
+    reduce_noise(picture);
+    grey_scale(picture);
+    black_white(picture);
+    line_horizontal(picture);
+    line_vertical(picture);
 
     
     //display it
@@ -82,19 +78,9 @@ void display(SDL_Surface * picture, int rot){
 
     if (rot)
     {
-        double angle = 90;
+        double angle = 90.0f;
         
         rotation(texture, renderer, srcR, dstR, angle);
-        /*SDL_Surface *new_pic = rotozoomSurface(picture, angle, 1.0, 0);
-        texture = SDL_CreateTextureFromSurface(renderer, new_pic);
-        SDL_QueryTexture(texture, NULL, NULL, &srcR.w, &srcR.h);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, &srcR, &dstR);
-        SDL_RenderPresent(renderer); 
-        wait_for_keypressed();
-        SDL_FreeSurface(new_pic);
-        surface_to_matrix(picture);*/
     }
 
     // Save all letters as a bitmap in the "Lettre" folder
