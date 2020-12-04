@@ -5,7 +5,6 @@
 #include "pixel_operations.h"
 #include "color_operations.h"
 #include "image_operations.h"
-#include "SDL2/SDL2_rotozoom.h"
 
 void rotation(SDL_Texture *texture, 
         SDL_Renderer *renderer, SDL_Rect srcR,
