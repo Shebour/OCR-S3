@@ -125,14 +125,14 @@ Uint32 mediane(SDL_Surface * picture, int i, int j, int n){
     return pixel;
 }
 
-void reduce_noise(SDL_Surface *picture){
-    Uint32 av;
+void reduce_noise(SDL_Surface *picture, int n){
+
     for (int i = 0; i < picture->w; i++){
         for (int j = 0; j < picture->h; j++){
             //Get the current pixel
             Uint32 pixel = get_pixel(picture, i, j);
             //Get the new color
-            pixel = mediane(picture, i, j, 2);
+            pixel = mediane(picture, i, j, n);
             //Set the new color in the pixel
             set_pixel(picture, i, j, pixel);
         }

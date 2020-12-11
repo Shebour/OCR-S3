@@ -51,37 +51,33 @@ void display(SDL_Surface * picture, int rot){
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     
-    //set the rectangle for the position of the picture on the screen
-    SDL_Rect srcR = {0, 0, 0, 0};
-    SDL_Rect dstR = {1920 / 2 - picture->w / 2, 1080 / 2 - picture->h / 2, picture->w, picture->h};
     //transform the picture
-    reduce_noise(picture);
+    
     grey_scale(picture);
     black_white(picture);
+    if (rot)
+    {
+        int angle = get_angle(picture);
+        picture = rotation(picture, (-1)*angle);
+    }
+    reduce_noise(picture, 2);
     line_horizontal(picture);
     line_vertical(picture);
 
     
     //display it
-    SDL_CreateWindowAndRenderer(1920, 1080, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(picture->w, picture->h, 0, &window, &renderer);
 
     texture = SDL_CreateTextureFromSurface(renderer, picture);
-    SDL_QueryTexture(texture, NULL, NULL, &srcR.w, &srcR.h);
     
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     
-    SDL_RenderCopy(renderer, texture, &srcR, &dstR);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     
     wait_for_keypressed();
-
-    if (rot)
-    {
-        double angle = 90.0f;
-        
-        rotation(texture, renderer, srcR, dstR, angle);
-    }
+    
 
     // Save all letters as a bitmap in the "Lettre" folder
     if (!rot)

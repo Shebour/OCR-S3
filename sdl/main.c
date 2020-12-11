@@ -21,7 +21,6 @@ int main(int argc, char **argv){
     
     if (argc == 3)
     {
-        
         display(picture, 1);
     }
     SDL_FreeSurface(picture);//Free the memory used by the picture
