@@ -31,33 +31,22 @@ SDL_Surface* b_w_threshold(SDL_Surface *picture)
 {
     SDL_Surface* res;
     res = SDL_CreateRGBSurface(0,picture -> w, picture -> h,32,0,0,0,0);
+    SDL_FillRect(res, NULL, SDL_MapRGB(res->format, 255, 255, 255));
     Uint32 pixel;
     Uint8 r,g,b;
-    for (int w = 0; w < res -> w; w++)
+    int i = 2;
+    int j;
+    while (i < (picture->w) - 2)
     {
-        for (int h = 0; h < res -> h; h++)
-        {    
-            r = 255;
-            g = 255;
-            b = 255;
-            pixel = SDL_MapRGB(res-> format,r,g,b);
-            set_pixel(res,w,h,pixel);
-        }
-    }
-    int i = 4;
-    int j = 4;
-    
-    while (i < (picture->w) - 4)
-    {
-        j = 4;
-        while (j < (picture->h) - 4)
+        j = 2;
+        while (j < (picture->h) - 2)
         {
-            int list[81];
+            int list[25];
             
             int h = 0;
-            for(int k = -4; k <= 4; k++)
+            for(int k = -2; k <= 2; k++)
             {
-                for(int l = -4; l <= 4; l++)
+                for(int l = -2; l <= 2; l++)
                 {
                     pixel = get_pixel(picture, i + k, j + l);
                     SDL_GetRGB(pixel,picture -> format, &r, &g, &b);
@@ -65,7 +54,7 @@ SDL_Surface* b_w_threshold(SDL_Surface *picture)
                     h++;
                 }
             }
-            //qsort(list,100,sizeof(int),intComparator);
+            quicksort(list, 0, 25);
             Uint32 sum = 0;
             for (int i = 0; i < h; i++)
             {
@@ -77,16 +66,9 @@ SDL_Surface* b_w_threshold(SDL_Surface *picture)
                 r = g = b = 255;
             else if (r < av )
                 r = g = b = 0;
-            /*else
-            {    
-                if (r > 127)
-                    r = g = b = 255;
-                else
-                    r = g = b = 0;
-            }*/
-                       pixel = SDL_MapRGB(picture-> format,r,g,b);
-                       set_pixel(res,i,j,pixel);
-                       j++;
+            pixel = SDL_MapRGB(picture-> format,r,g,b);
+            set_pixel(res,i,j,pixel);
+            j++;
         }
         i++;
     }

@@ -53,7 +53,8 @@ void display(SDL_Surface * picture, int rot){
 
     //transform the picture
     grey_scale(picture);
-    black_white(picture);
+    //black_white(picture);
+    picture = b_w_threshold(picture);
     if (rot)
     {
         int angle = get_angle(picture);
