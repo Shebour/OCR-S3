@@ -23,7 +23,7 @@ void angle_min_y (SDL_Surface* picture, int* tab)
         {
             pixel = get_pixel(picture, j, i);
             SDL_GetRGB(pixel, picture ->format, &r, &g, &b);
-            if (r != 255)
+            if (r == 0)
             {
                 tab[0] = j;
                 tab[1] = i;
@@ -39,13 +39,13 @@ void angle_max_x (SDL_Surface* picture, int* tab)
     Uint8 r,g,b;
     int height = picture -> h;
     int width = picture -> w;
-    for(int j = width - 1; j >  0; j--)
+    for(int j = width - 1; j > 0; j--)
     {
         for(int i = 0; i < height; i++)
         {
             pixel = get_pixel(picture, j, i);
             SDL_GetRGB(pixel, picture ->format, &r, &g, &b);
-            if (r != 255)
+            if (r == 0)
             {
                 tab[0] = j;
                 tab[1] = i;
@@ -63,6 +63,8 @@ int get_angle(SDL_Surface *picture)
     angle_max_x(picture,res);
     int Xb = res[0];
     int Yb = res[1];
+    if (-6 + Yb <= Ya && Ya <= 6 + Yb)
+        return 0;
     double a_maxx = Yb - Ya;
     double miny_a = Xb - Xa;
     double miny_maxx = sqrt(miny_a*miny_a + a_maxx*a_maxx);
