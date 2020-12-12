@@ -27,6 +27,72 @@ void grey_scale(SDL_Surface *picture){
     }
 }
 
+SDL_Surface* b_w_threshold(SDL_Surface *picture)
+{
+    SDL_Surface* res;
+    res = SDL_CreateRGBSurface(0,picture -> w, picture -> h,32,0,0,0,0);
+    Uint32 pixel;
+    Uint8 r,g,b;
+    for (int w = 0; w < res -> w; w++)
+    {
+        for (int h = 0; h < res -> h; h++)
+        {    
+            r = 255;
+            g = 255;
+            b = 255;
+            pixel = SDL_MapRGB(res-> format,r,g,b);
+            set_pixel(res,w,h,pixel);
+        }
+    }
+    int i = 4;
+    int j = 4;
+    
+    while (i < (picture->w) - 4)
+    {
+        j = 4;
+        while (j < (picture->h) - 4)
+        {
+            int list[81];
+            
+            int h = 0;
+            for(int k = -4; k <= 4; k++)
+            {
+                for(int l = -4; l <= 4; l++)
+                {
+                    pixel = get_pixel(picture, i + k, j + l);
+                    SDL_GetRGB(pixel,picture -> format, &r, &g, &b);
+                    list[h] = r;
+                    h++;
+                }
+            }
+            //qsort(list,100,sizeof(int),intComparator);
+            Uint32 sum = 0;
+            for (int i = 0; i < h; i++)
+            {
+                sum += list[i];
+            }
+
+            int av = sum / h - 7;
+            if(r > av)
+                r = g = b = 255;
+            else if (r < av )
+                r = g = b = 0;
+            /*else
+            {    
+                if (r > 127)
+                    r = g = b = 255;
+                else
+                    r = g = b = 0;
+            }*/
+                       pixel = SDL_MapRGB(picture-> format,r,g,b);
+                       set_pixel(res,i,j,pixel);
+                       j++;
+        }
+        i++;
+    }
+    return res;
+    
+}
 
 void black_white(SDL_Surface *picture){
     //Transform the picture in black and white

@@ -9,27 +9,7 @@
 #include "display_picture.h"
 #define PI 3.14159265
 
-/*void rotation(SDL_Texture *texture, 
-        SDL_Renderer *renderer, SDL_Rect srcR,
-        SDL_Rect dstR, double angle)
-{
-    SDL_Event event;
-    int delay = 10;
-    int rotate = 1;
 
-    while(rotate)
-    {
-        SDL_Point center = {srcR.w / 2, srcR.h / 2};
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
-        SDL_RenderCopyEx(renderer, texture, &srcR, &dstR, angle, &center, SDL_FLIP_NONE);
-        SDL_RenderPresent(renderer);
-        SDL_Delay(delay);
-        wait_for_keypressed();
-        rotate = 0;
-
-    }
-}*/
 void angle_min_y (SDL_Surface* picture, int* tab) 
 {
     Uint32 pixel;
@@ -82,13 +62,9 @@ int get_angle(SDL_Surface *picture)
     angle_min_y(picture, res);
     int Xa = res[0];
     int Ya = res[1];
-    printf("Xa = %d\n", Xa);
-    printf("Ya = %d\n", Ya);
     angle_max_x(picture,res);
     int Xb = res[0];
     int Yb = res[1];
-    printf("Xb = %d\n", Xb);
-    printf("Yb = %d\n", Yb);
     double a_maxx = Yb - Ya;
     double miny_a = Xb - Xa;
     double miny_maxx = sqrt(miny_a*miny_a + a_maxx*a_maxx);

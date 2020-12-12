@@ -50,9 +50,8 @@ void display(SDL_Surface * picture, int rot){
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
-    
+
     //transform the picture
-    
     grey_scale(picture);
     black_white(picture);
     if (rot)
